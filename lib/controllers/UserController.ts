@@ -45,7 +45,7 @@ export class UserController {
     }
 
     public deleteUser(req: Request, res: Response) {
-        User.remove({ _id: req.params.userId }, (err) => {
+        User.deleteOne({ _id: req.params.userId }, (err) => {
             if (err) {
                 res.send(err);
             }
