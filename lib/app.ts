@@ -2,7 +2,7 @@ import * as express from "express";
 import * as bodyParser from "body-parser";
 import * as mongoose from "mongoose";
 
-import { Routes } from "./routes/routes";
+import { Routes } from "./routes/userRoutes";
 
 class App {
     public app: express.Application;
