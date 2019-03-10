@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import * as bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 
 import { UserSchema } from '../models/UserModel';
@@ -7,14 +8,30 @@ const User = mongoose.model('User', UserSchema);
 
 export class UserController {
     public addNewUser(req: Request, res: Response) {
-        let newUser = new User(req.body);
+        let userData = req.body;
 
-        newUser.save((err, user) => {
-            if (err) {
-                res.send(err);
-            }
-            res.json(user);
-        });
+        if (req.body.password && req.body.confirmPassword && (req.body.password === req.body.confirmPassword)){
+            bcrypt.hash(req.body.password, 10, (err, hash: String) => {
+                if(err){
+                    res.send(err);
+                }
+                userData.password = hash;
+
+                let newUser = new User(userData);
+                
+                newUser.save((err, user) => {
+                    if (err) {
+                        res.send(err);
+                    }
+                    res.json(user);
+                });
+            });
+        } else {
+            res.send({
+                status: 'error',
+                message: 'Password and confirm password must both be set and MUST match'
+            });
+        }
     }
 
     public getUsers(req: Request, res: Response) {
