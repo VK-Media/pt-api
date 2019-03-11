@@ -4,12 +4,10 @@ const Schema = mongoose.Schema;
 
 export const UserSchema = new Schema({
     firstName: {
-        type: String,
-        required: 'Enter a first name'
+        type: String
     },
     lastName: {
-        type: String,
-        required: 'Enter a last name'
+        type: String
     },
     email: {
         type: String

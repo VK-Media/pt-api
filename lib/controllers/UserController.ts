@@ -10,7 +10,7 @@ export class UserController {
     public addNewUser(req: Request, res: Response) {
         let userData = req.body;
 
-        if (req.body.password && req.body.confirmPassword && (req.body.password === req.body.confirmPassword)){
+        if (req.body.password){
             bcrypt.hash(req.body.password, 10, (err, hash: String) => {
                 if(err){
                     res.send(err);
@@ -29,7 +29,7 @@ export class UserController {
         } else {
             res.send({
                 status: 'error',
-                message: 'Password and confirm password must both be set and MUST match'
+                message: 'Password is required!'
             });
         }
     }
