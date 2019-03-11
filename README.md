@@ -1,7 +1,7 @@
 # Personal Trainer API
 *The Offical API for VK Medias Personal Trainer apps*
 
-Below you can find the current endpoints of the API in the following format:\
+Below you can find endpoints of the API in the following format:\
 ```HTTP_METHOD "URL" - Description of endpoint```
 
 As well as the properties of each model in the following format:\
@@ -9,7 +9,7 @@ As well as the properties of each model in the following format:\
     * property configuration
     * ...
 
-### Current endpoints
+### Endpoints
 #### User
 **GET** "/user" - returns all users\
 **POST** "/user" - creates a new user\
@@ -17,7 +17,7 @@ As well as the properties of each model in the following format:\
 **PUT** "user/:userId" - updates one user with given id\
 **DELETE** "user/:userId" - deletes one user with given id
 
-### Current models
+### Models
 #### User
 A User has the following properties:
 * firstName
