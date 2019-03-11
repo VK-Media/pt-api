@@ -4,6 +4,11 @@
 Below you can find the current endpoints of the API in the following format:\
 ```HTTP_METHOD "URL" - Description of endpoint```
 
+As well as the properties of each model in the following format:\
+* property
+    * property configuration
+    * ...
+
 ### Current endpoints
 #### User
 **GET** "/user" - returns all users\
