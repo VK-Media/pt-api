@@ -11,13 +11,13 @@ DELETE "user/:userId" - deletes one user with given id
 
 ### Current models
 #### User
-    + firstName
-        + String
-    + lastName
-        + String
-    + email
-        + String
-        + Required
-    + password
-        + String
-        + Required
+    * firstName
+    * String
+    * lastName
+    * String
+    * email
+    * String
+    * Required
+    * password
+    * String
+    * Required
