@@ -9,8 +9,13 @@ As well as the properties of each model in the following format:\
     * property configuration
     * ...
 
-### Endpoints
-#### User
+## Endpoints
+### User
+
+| METHOD | URL | DESCRIPTION |
+| ------ | --- | ----------- |
+| **GET** | /user | returns all users |
+
 **GET** "/user" - returns all users\
 **POST** "/user" - creates a new user\
 **GET** "user/:userId" - returns one user with given id\
@@ -18,8 +23,8 @@ As well as the properties of each model in the following format:\
 **DELETE** "user/:userId" - deletes one user with given id\
 **POST** "user/authenticate" - authenticates the user on the server
 
-### Models
-#### User
+## Models
+### User
 A User has the following properties:
 * firstName
     * String
