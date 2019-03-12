@@ -23,9 +23,7 @@ Response
         "created_date": "2019-03-10T17:57:10.901Z",
         "__v": 0
     },
-    {
-	    ...
-	}
+    {...}
 ]
 ```
 ---
@@ -41,6 +39,7 @@ POST /user
 | lastName | `String` | The last name of the user |
 | email | `String` | **Required**, **Unique**. The email of the user |
 | password | `String` | **Required**. The password of the user |
+
 Example
 ```
 {
@@ -95,6 +94,7 @@ PUT /user/:userId
 | firstName | `String` | The first name of the user |
 | lastName | `String` | The last name of the user |
 | email | `String` | The email of the user |
+
 Example
 ```
 /user/5c854ff67b167c4604966e54
@@ -142,6 +142,7 @@ Response
 | ---------- | ------- | --------------- |
 | email | `String` | **Required**. The email of the user to be authenticated |
 | password | `String` | **Required**. The password of the user to be authenticated |
+
 Example
 ```
 {
