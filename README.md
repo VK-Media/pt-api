@@ -1,40 +1,158 @@
+
 # Personal Trainer API
+
 *The Offical API for VK Medias Personal Trainer apps*
-
-Below you can find endpoints of the API in the following format:\
-```HTTP_METHOD "URL" - Description of endpoint```
-
-As well as the properties of each model in the following format:\
-* property
-    * property configuration
-    * ...
+Below you can find endpoints of the API
 
 ## Endpoints
 ### User
 
-| METHOD | URL | DESCRIPTION |
-| ------ | --- | ----------- |
-| **GET** | /user | returns all users |
+```
+GET /user
+```
 
-**GET** "/user" - returns all users\
-**POST** "/user" - creates a new user\
-**GET** "user/:userId" - returns one user with given id\
-**PUT** "user/:userId" - updates one user with given id\
-**DELETE** "user/:userId" - deletes one user with given id\
-**POST** "user/authenticate" - authenticates the user on the server
+Response
+```
+[
+    {
+        "_id": "5c854ff67b167c4604966e54",
+        "firstName": "John",
+        "lastName": "Doe",
+        "email": "john@doe.com",
+        "password": "$2b$10$MDklFRS9vP8f58cV3BXGcOKTAOTr74LVvFFMYgdssl0RCJVB62D5e",
+        "created_date": "2019-03-10T17:57:10.901Z",
+        "__v": 0
+    },
+    {
+	    ...
+	}
+]
+```
+---
+```
+POST /user
+```
 
-## Models
-### User
-A User has the following properties:
-* firstName
-    * String
-* lastName
-    * String
-* email
-    * String
-    * Required
-    * Unique
-* password
-    * String
-    * Required
+##### Parameters
 
+| **Name** | **Type** | **Description** |
+| ---------- | ------- | --------------- |
+| firstName | `String` | The first name of the user |
+| lastName | `String` | The last name of the user |
+| email | `String` | **Required**, **Unique**. The email of the user |
+| password | `String` | **Required**. The password of the user |
+Example
+```
+{
+	firstName: 'John',
+	lastName: 'Doe',
+	email: 'john@doe.com',
+	password: '1234'
+}
+```
+
+Response
+```
+{
+    "_id": "5c854ff67b167c4604966e54",
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john@doe.com",
+    "password": "$2b$10$MDklFRS9vP8f58cV3BXGcOKTAOTr74LVvFFMYgdssl0RCJVB62D5e",
+    "created_date": "2019-03-10T17:57:10.901Z",
+    "__v": 0
+}
+```
+---
+```
+GET /user/:userId
+```
+Example
+```
+/user/5c854ff67b167c4604966e54
+```
+
+Response
+```
+{
+    "_id": "5c854ff67b167c4604966e54",
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john@doe.com",
+    "password": "$2b$10$MDklFRS9vP8f58cV3BXGcOKTAOTr74LVvFFMYgdssl0RCJVB62D5e",
+    "created_date": "2019-03-10T17:57:10.901Z",
+    "__v": 0
+}
+```
+---
+```
+PUT /user/:userId
+```
+
+##### Parameters
+| **Name** | **Type** | **Description** |
+| ---------- | ------- | --------------- |
+| firstName | `String` | The first name of the user |
+| lastName | `String` | The last name of the user |
+| email | `String` | The email of the user |
+Example
+```
+/user/5c854ff67b167c4604966e54
+
+{
+	firstName: 'Jane',
+	email: 'jane@doe.com'
+}
+```
+
+Response
+```
+{
+    "_id": "5c854ff67b167c4604966e54",
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "email": "jane@doe.com",
+    "password": "$2b$10$MDklFRS9vP8f58cV3BXGcOKTAOTr74LVvFFMYgdssl0RCJVB62D5e",
+    "created_date": "2019-03-10T17:57:10.901Z",
+    "__v": 0
+}
+```
+---
+```
+DELETE /user/:userId
+```
+Example
+```
+/user/5c854ff67b167c4604966e54
+```
+Response
+```
+{
+    "status": "success",
+    "message": "The user has been deleted!"
+}
+```
+---
+```
+/user/authenticate
+```
+##### Parameters
+
+| **Name** | **Type** | **Description** |
+| ---------- | ------- | --------------- |
+| email | `String` | **Required**. The email of the user to be authenticated |
+| password | `String` | **Required**. The password of the user to be authenticated |
+Example
+```
+{
+	email: 'jane2doe.com',
+	password: '1234'
+}
+```
+Response
+```
+{
+    "status": "success",
+    "message": "User authenticated"
+}
+```

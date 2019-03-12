@@ -90,7 +90,7 @@ export class UserController {
             if (err) {
                 res.send(err);
             }
-            res.json({ message: 'Successfully deleted user!' });
+            res.json({ message: 'The user has been deleted!' });
         });
     }
 
