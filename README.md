@@ -1,7 +1,7 @@
 
 # Personal Trainer API
 
-*The Offical API for VK Medias Personal Trainer apps*
+*The Offical API for VK Medias Personal Trainer apps*\
 Below you can find endpoints of the API
 
 ## Endpoints
