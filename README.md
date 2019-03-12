@@ -15,7 +15,7 @@ As well as the properties of each model in the following format:\
 **POST** "/user" - creates a new user\
 **GET** "user/:userId" - returns one user with given id\
 **PUT** "user/:userId" - updates one user with given id\
-**DELETE** "user/:userId" - deletes one user with given id
+**DELETE** "user/:userId" - deletes one user with given id\
 **POST** "user/authenticate" - authenticates the user on the server
 
 ### Models
