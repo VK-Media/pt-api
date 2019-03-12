@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 
-import { UserSchema } from '../models/UserModel';
+import UserSchema from '../models/UserModel';
 
 const User = mongoose.model('User', UserSchema);
 
@@ -10,15 +10,15 @@ export class UserController {
     public addNewUser(req: Request, res: Response) {
         let userData = req.body;
 
-        if (req.body.password){
+        if (req.body.password && req.body.email) {
             bcrypt.hash(req.body.password, 10, (err, hash: String) => {
-                if(err){
+                if (err) {
                     res.send(err);
                 }
                 userData.password = hash;
 
                 let newUser = new User(userData);
-                
+
                 newUser.save((err, user) => {
                     if (err) {
                         res.send(err);
@@ -29,7 +29,7 @@ export class UserController {
         } else {
             res.send({
                 status: 'error',
-                message: 'Password is required!'
+                message: 'Email and Password are required!'
             });
         }
     }
@@ -67,6 +67,20 @@ export class UserController {
                 res.send(err);
             }
             res.json({ message: 'Successfully deleted user!' });
+        });
+    }
+
+    public authenticateUser(req: Request, res: Response) {
+        User.findOne({ email: req.body.email }, async (err, user: any) => {
+            if (err) {
+                res.send(err);
+            }
+
+            if(await user.authenticate(req.body.password)){
+                res.json({ status: 'success', message: "User authenticated" });
+            } else {
+                res.json({ status: 'error', message: "User not authenticated" });
+            }
         });
     }
 }

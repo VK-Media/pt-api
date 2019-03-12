@@ -22,5 +22,8 @@ export class Routes {
             .get(this.userController.getUserById)
             .put(this.userController.updateUser)
             .delete(this.userController.deleteUser)
+        
+        app.route('/user/authenticate')
+            .post(this.userController.authenticateUser)
     }
 }
