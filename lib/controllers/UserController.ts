@@ -10,20 +10,30 @@ export class UserController {
     public addNewUser(req: Request, res: Response) {
         let userData = req.body;
 
-        if (req.body.password && req.body.email) {
-            bcrypt.hash(req.body.password, 10, (err, hash: String) => {
-                if (err) {
+        if (req.body.password && req.body.email){
+            User.findOne({ email: req.body.email }, (err, user) => {
+                if(err){
                     res.send(err);
                 }
-                userData.password = hash;
 
-                let newUser = new User(userData);
+                if(user){
+                    res.send({ status: 'error', message: 'A user with this email already exists.' });
+                }
 
-                newUser.save((err, user) => {
+                bcrypt.hash(req.body.password, 10, (err, hash: String) => {
                     if (err) {
                         res.send(err);
                     }
-                    res.json(user);
+                    userData.password = hash;
+    
+                    let newUser = new User(userData);
+    
+                    newUser.save((err, user) => {
+                        if (err) {
+                            res.send(err);
+                        }
+                        res.json(user);
+                    });
                 });
             });
         } else {
@@ -34,7 +44,7 @@ export class UserController {
         }
     }
 
-    public getUsers(req: Request, res: Response) {
+    public getUsers(req: Request, res: Response){
         User.find({}, (err, user) => {
             if (err) {
                 res.send(err);
@@ -43,7 +53,7 @@ export class UserController {
         });
     }
 
-    public getUserById(req: Request, res: Response) {
+    public getUserById(req: Request, res: Response){
         User.findById(req.params.userId, (err, user) => {
             if (err) {
                 res.send(err);
@@ -52,16 +62,30 @@ export class UserController {
         });
     }
 
-    public updateUser(req: Request, res: Response) {
-        User.findOneAndUpdate({ _id: req.params.userId }, req.body, { new: true }, (err, user) => {
-            if (err) {
-                res.send(err);
-            }
-            res.json(user);
-        });
+    public updateUser(req: Request, res: Response){
+        if(req.body.email){
+            User.findOne({ email: req.body.email }, (err, user) => {
+                if (err) {
+                    res.send(err);
+                }
+
+                if (user) {
+                    res.send({ status: 'error', message: 'A user with this email already exists.' });
+                }
+
+                User.findOneAndUpdate({ _id: req.params.userId }, req.body, { new: true }, (err, updatedUser) => {
+                    if (err) {
+                        res.send(err);
+                    }
+                    res.json(updatedUser);
+                });
+            });
+        } else {
+            res.send({ status: 'error', message: 'Email is required!'});
+        }
     }
 
-    public deleteUser(req: Request, res: Response) {
+    public deleteUser(req: Request, res: Response){
         User.deleteOne({ _id: req.params.userId }, (err) => {
             if (err) {
                 res.send(err);
@@ -70,7 +94,7 @@ export class UserController {
         });
     }
 
-    public authenticateUser(req: Request, res: Response) {
+    public authenticateUser(req: Request, res: Response){
         User.findOne({ email: req.body.email }, async (err, user: any) => {
             if (err) {
                 res.send(err);
