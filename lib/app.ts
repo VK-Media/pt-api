@@ -2,11 +2,11 @@ import * as express from "express";
 import * as bodyParser from "body-parser";
 import * as mongoose from "mongoose";
 
-import { Routes } from "./routes/userRoutes";
+import UserRoutes from "./routes/userRoutes";
 
 class App {
     public app: express.Application;
-    public routePrv: Routes = new Routes();
+    public routePrv: UserRoutes = new UserRoutes();
     public mongoUrl: string = 'mongodb+srv://code-user:6wSXtNwXNvaus9X@pt-api-dxkzc.gcp.mongodb.net/test?retryWrites=true';
 
     constructor() {

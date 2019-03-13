@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import { UserController } from "../controllers/UserController";
 
-export class Routes {
+export default class UserRoutes {
     public userController: UserController = new UserController();
 
     public routes(app): void {
