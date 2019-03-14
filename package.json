@@ -9,6 +9,9 @@
         "gcp-build": "tsc -p .",
         "start": "node ./build/server.js"
     },
+    "engines": {
+        "node": "10.x"
+    },
     "author": "VK Media",
     "license": "ISC",
     "devDependencies": {
