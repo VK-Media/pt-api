@@ -2,12 +2,12 @@
     "name": "pt-api",
     "version": "1.0.0",
     "description": "This is the API for VK Medias Personal Trainer app",
-    "main": "index.js",
+    "main": "build/server.js",
     "scripts": {
         "build": "tsc -p .",
         "dev": "ts-node ./lib/server.ts",
         "gcp-build": "tsc -p .",
-        "start": "node ./build/server.js"
+        "start": "npm run build && node ./build/server.js"
     },
     "engines": {
         "node": "10.x"
