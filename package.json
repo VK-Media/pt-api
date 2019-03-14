@@ -6,7 +6,7 @@
     "scripts": {
         "build": "tsc",
         "dev": "ts-node ./lib/server.ts",
-        "start": "npm run build && node ./build/server.js"
+        "start": "node ./build/server.js"
     },
     "author": "VK Media",
     "license": "ISC",
