@@ -6,8 +6,8 @@
     "scripts": {
         "build": "tsc -p .",
         "dev": "ts-node ./lib/server.ts",
-        "gcp-build": "tsc -p .",
-        "start": "npm run build && node ./build/server.js"
+        "postinstall": "tsc",
+        "start": "node ./build/server.js"
     },
     "engines": {
         "node": "10.x"
