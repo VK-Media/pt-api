@@ -9,7 +9,7 @@ export default class UserRoutes {
         app.route('/')
             .get((req: Request, res: Response) => {
                 res.status(200).send({
-                    message: 'This is a SIMPLE test!'
+                    message: 'This is a JUST ANOTHER test!'
                 })
             })
 
