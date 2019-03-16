@@ -7,7 +7,7 @@ import UserRoutes from "./routes/userRoutes";
 class App {
     public app: express.Application;
     public routePrv: UserRoutes = new UserRoutes();
-    public mongoUrl: string = 'mongodb+srv://code-user:6wSXtNwXNvaus9X@pt-api-dxkzc.gcp.mongodb.net/test?retryWrites=true';
+    public mongoUrl: string = process.env.MONGODB_URL || 'mongodb+srv://code-user:6wSXtNwXNvaus9X@pt-api-dxkzc.gcp.mongodb.net/test?retryWrites=true';
 
     constructor() {
         this.app = express();

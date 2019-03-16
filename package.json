@@ -6,7 +6,7 @@
     "scripts": {
         "build": "tsc -p .",
         "dev": "ts-node ./lib/server.ts",
-        "start": "pm2 restart pt-api"
+        "start": "pm2 start"
     },
     "engines": {
         "node": "10.x"
