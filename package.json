@@ -6,7 +6,7 @@
     "scripts": {
         "build": "tsc -p .",
         "dev": "ts-node ./lib/server.ts",
-        "start": "pm2 start"
+        "start": "pm2 start ~/ecosystem.config.js"
     },
     "engines": {
         "node": "10.x"
