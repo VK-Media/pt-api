@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { UserController } from "../controllers/UserController";
+import { UserController } from "../controllers/index";
 
 export default class UserRoutes {
     public userController: UserController = new UserController();

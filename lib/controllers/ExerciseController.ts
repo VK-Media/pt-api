@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 import { Request, Response } from 'express';
 
-import ExerciseSchema from '../models/ExerciseModel';
+import { ExerciseSchema } from '../models/index';
 
 const Exercise = mongoose.model('Exercise', ExerciseSchema);
 

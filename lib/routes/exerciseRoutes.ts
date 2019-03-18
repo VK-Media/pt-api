@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { ExerciseController } from "../controllers/ExerciseController";
+import { ExerciseController } from "../controllers/index";
 
 export default class ExerciseRoutes {
     public exerciseController: ExerciseController = new ExerciseController();

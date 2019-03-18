@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 
-import UserSchema from '../models/UserModel';
+import { UserSchema } from '../models/index';
 
 const User = mongoose.model('User', UserSchema);
 
