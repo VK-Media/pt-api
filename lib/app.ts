@@ -3,16 +3,19 @@ import * as bodyParser from "body-parser";
 import * as mongoose from "mongoose";
 
 import UserRoutes from "./routes/userRoutes";
+import ExerciseRoutes from "./routes/exerciseRoutes";
 
 class App {
     public app: express.Application;
-    public routePrv: UserRoutes = new UserRoutes();
-    public mongoUrl: string = process.env.MONGODB_URL || 'mongodb+srv://code-user:6wSXtNwXNvaus9X@pt-api-dxkzc.gcp.mongodb.net/test?retryWrites=true';
+    public userRoutes: UserRoutes = new UserRoutes();
+    public exerciseRoutes: ExerciseRoutes = new ExerciseRoutes();
+    public mongoUrl: string = process.env.MONGODB_URL || 'mongodb+srv://dev-user:0YEQY7TSlUrFfN3L@pt-development-rqjee.gcp.mongodb.net/test?retryWrites=true';
 
     constructor() {
         this.app = express();
         this.config();
-        this.routePrv.routes(this.app); 
+        this.userRoutes.routes(this.app); 
+        this.exerciseRoutes.routes(this.app); 
         this.mongoSetup();
     }
 
