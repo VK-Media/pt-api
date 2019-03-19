@@ -23,7 +23,10 @@ export default class UserRoutes {
             .put(this.userController.updateUser)
             .delete(this.userController.deleteUser)
         
-        app.route('/user/authenticate')
-            .post(this.userController.authenticateUser)
+        app.route('/user/authenticate/credentials')
+            .post(this.userController.authenticateUserWithCredentials)
+        
+        app.route('/user/authenticate/jwt')
+            .get(this.userController.authenticateUserWithJWT)
     }
 }

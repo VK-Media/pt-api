@@ -14,7 +14,9 @@
     "author": "VK Media",
     "license": "ISC",
     "devDependencies": {
+        "@types/bcrypt": "^3.0.0",
         "@types/express": "^4.16.1",
+        "@types/jsonwebtoken": "^8.3.2",
         "@types/mongoose": "^5.3.21",
         "typescript": "^3.3.3333"
     },
