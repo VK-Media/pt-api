@@ -120,12 +120,17 @@ export class UserController {
     public authenticateUserWithJWT = (req: Request, res: Response) => {
         const token = req.headers['x-access-token'];
 
-        if (typeof token !== 'string') return res.status(401).send({ status: 'error', message: 'No token provided.' });
+        if (typeof token !== 'string') return res.status(401).send({ status: 'error', message: 'No token provided!' });
 
-        jwt.verify(token, process.env.JWT_SECRET || 'dev-secret', function (err, decoded) {
+        jwt.verify(token, process.env.JWT_SECRET || 'dev-secret', function (err, decoded: any) {
             if (err) return res.status(401).send({ status: 'error', message: 'Failed to authenticate token.' });
 
-            res.send({ status: 'success', message: 'The token has been verified!', decoded });
+            User.findById(decoded.id, { password: 0 }, function (err, user) {
+                if(err) res.status(500).send({status: 'success', message: 'There was a problem finding the user!' });
+                if (!user) return res.status(404).send({ status: 'success', message: 'A user with given ID does not exist!' });
+
+                res.send({ status: 'success', message: 'The token has been verified!', user });
+            });
         });
     }
 
