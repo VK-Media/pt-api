@@ -14,16 +14,16 @@ export class UserController {
         if (req.body.password && req.body.email){
             User.findOne({ email: req.body.email }, (err, user) => {
                 if(err){
-                    res.send(err);
+                    res.status(500).send(err);
                 }
 
                 if(user){
-                    res.send({ status: 'error', message: 'A user with this email already exists.' });
+                    res.status(409).send({ message: 'A user with this email already exists.' });
                 }
 
                 bcrypt.hash(req.body.password, 10, (err, hash: String) => {
                     if (err) {
-                        res.send(err);
+                        res.status(500).send(err);
                     }
                     userData.password = hash;
     
@@ -31,35 +31,35 @@ export class UserController {
     
                     newUser.save(async (err, user) => {
                         if (err) {
-                            res.send(err);
+                            res.status(500).send(err);
                         }
                         
                         const token = await this.signToken(user._id);
 
-                        res.json({ status: 'success', message: 'The user has been created' });
+                        res.send({ user, token });
                     });
                 });
             });
         } else {
-            res.send({ status: 'error', message: 'Email and Password are required!' });
+            res.status(400).send({ message: 'Email and Password are required!' });
         }
     }
 
     public getUsers = (req: Request, res: Response) => {
-        User.find({}, (err, user) => {
+        User.find({}, (err, users) => {
             if (err) {
-                res.send(err);
+                res.status(500).send(err);
             }
-            res.json(user);
+            res.send({ users });
         });
     }
 
     public getUserById = (req: Request, res: Response) => {
         User.findById(req.params.userId, (err, user) => {
             if (err) {
-                res.send(err);
+                res.status(500).send(err);
             }
-            res.json(user);
+            res.send({ user });
         });
     }
 
@@ -67,22 +67,22 @@ export class UserController {
         if(req.body.email){
             User.findOne({ email: req.body.email }, (err, user) => {
                 if (err) {
-                    res.send(err);
+                    res.status(500).send(err);
                 }
 
                 if (user) {
-                    res.send({ status: 'error', message: 'A user with this email already exists.' });
+                    res.status(409).send({ message: 'A user with this email already exists.' });
                 }
 
                 User.findOneAndUpdate({ _id: req.params.userId }, req.body, { new: true }, (err, updatedUser) => {
                     if (err) {
-                        res.send(err);
+                        res.status(500).send(err);
                     }
-                    res.json(updatedUser);
+                    res.send({ user: updatedUser });
                 });
             });
         } else {
-            res.send({ status: 'error', message: 'Email is required!'});
+            res.status(400).send({ message: 'Email is required!'});
         }
     }
 
@@ -91,14 +91,14 @@ export class UserController {
             if (err) {
                 res.send(err);
             }
-            res.json({ message: 'The user has been deleted!' });
+            res.send({ message: 'The user has been deleted!' });
         });
     }
 
     public authenticateUserWithCredentials = (req: Request, res: Response) => {
         User.findOne({ email: req.body.email }, async (err, user: any) => {
             if (err) {
-                res.send(err);
+                res.status(500).send(err);
             }
 
             if(user){
@@ -106,12 +106,12 @@ export class UserController {
                     const token = this.signToken(user._id);
 
                     if(token){
-                        res.json({ status: 'success', message: "User authenticated", token });
+                        res.send({ user, token });
                     } else {
-                        res.json({ status: 'error', message: "Token could not be generated." });
+                        res.status(401).send({ message: "Token could not be generated." });
                     }
                 } else {
-                    res.json({ status: 'error', message: "User not authenticated" });
+                    res.status(401).send({ message: "User not authenticated" });
                 }
             }
         });
@@ -120,21 +120,21 @@ export class UserController {
     public authenticateUserWithJWT = (req: Request, res: Response) => {
         const token = req.headers['x-access-token'];
 
-        if (typeof token !== 'string') return res.status(401).send({ status: 'error', message: 'No token provided!' });
+        if (typeof token !== 'string') return res.status(401).send({ message: 'No token provided!' });
 
         jwt.verify(token, process.env.JWT_SECRET || 'dev-secret', function (err, decoded: any) {
-            if (err) return res.status(401).send({ status: 'error', message: 'Failed to authenticate token.' });
+            if (err) return res.status(401).send({ message: 'Failed to authenticate token.' });
 
             User.findById(decoded.id, { password: 0 }, function (err, user) {
-                if(err) res.status(500).send({status: 'success', message: 'There was a problem finding the user!' });
-                if (!user) return res.status(404).send({ status: 'success', message: 'A user with given ID does not exist!' });
+                if(err) res.status(500).send({ message: 'There was a problem finding the user!' });
+                if (!user) return res.status(404).send({ message: 'A user with given ID does not exist!' });
 
-                res.send({ status: 'success', message: 'The token has been verified!', user });
+                res.send({ user });
             });
         });
     }
 
-    public signToken = (id: string) => {
+    protected signToken = (id: string) => {
         return jwt.sign({ id }, process.env.JWT_SECRET || 'dev-secret', { expiresIn: 86400 });
     }
 }
