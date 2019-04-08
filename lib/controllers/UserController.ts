@@ -118,7 +118,9 @@ export class UserController {
     }
 
     public authenticateUserWithJWT = (req: Request, res: Response) => {
-        const token = req.headers['x-access-token'];
+        const authorizationHeader = req.headers['authorization']
+        const bearer = authorizationHeader.split(' ');
+        const token = bearer[1];
 
         if (typeof token !== 'string') return res.status(401).send({ message: 'No token provided!' });
 
