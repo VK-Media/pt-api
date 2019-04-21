@@ -35,7 +35,6 @@ class App {
     private mongoSetup(): void {
         mongoose.connect(this.mongoUrl, { useNewUrlParser: true });
     }
-
 }
 
 export default new App().app;
