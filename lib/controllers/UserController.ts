@@ -5,8 +5,10 @@ import * as _ from 'lodash';
 import { Request, Response } from 'express';
 
 import { UserSchema } from '../models/index';
+import { UserTypeSchema } from '../models/index';
 
 const User = mongoose.model('User', UserSchema);
+const UserType = mongoose.model('UserType', UserTypeSchema);
 
 export class UserController {
     public addNewUser = (req: Request, res: Response) => {
@@ -22,15 +24,23 @@ export class UserController {
 
                     userData.password = hash;
 
-                    let newUser = new User(userData);
-
-                    newUser.save(async (err, createdUser) => {
+                    UserType.findOne({ title: 'Client' }, (err, userType) => {
                         if (err) return res.status(500).send(err);
 
-                        const filteredUser = _.omit(createdUser.toObject(), 'password');
-                        const token = await this.signToken(createdUser._id);
+                        if (userType) {
+                            userData.userType = userType;
 
-                        return res.send({ user: filteredUser, token });
+                            const newUser = new User(userData);
+
+                            newUser.save(async (err, createdUser) => {
+                                if (err) return res.status(500).send(err);
+
+                                const filteredUser = _.omit(createdUser.toObject(), 'password');
+                                const token = await this.signToken(createdUser._id);
+
+                                return res.send({ user: filteredUser, token });
+                            });
+                        }
                     });
                 });
             });
@@ -40,7 +50,7 @@ export class UserController {
     }
 
     public getUsers = (req: Request, res: Response) => {
-        User.find({}, (err, users) => {
+        User.find({}, { password: 0 }, (err, users) => {
             if (err) return res.status(500).send(err);
 
             return res.send({ users });
@@ -48,7 +58,7 @@ export class UserController {
     }
 
     public getUserById = (req: Request, res: Response) => {
-        User.findById(req.params.userId, (err, user) => {
+        User.findById(req.params.userId, { password: 0 }, (err, user) => {
             if (err) return res.status(500).send(err);
 
             return res.send({ user });
@@ -56,20 +66,13 @@ export class UserController {
     }
 
     public updateUser = (req: Request, res: Response) => {
-        if (req.body.email) {
-            User.findOne({ email: req.body.email }, (err, user) => {
-                if (err) return res.status(500).send(err);
-                if (user) return res.status(409).send({ message: 'A user with this email already exists.' });
+        User.findOneAndUpdate({ _id: req.params.userId }, req.body, { new: true }, (err, updatedUser) => {
+            if (err) return res.status(500).send(err);
 
-                User.findOneAndUpdate({ _id: req.params.userId }, req.body, { new: true }, (err, updatedUser) => {
-                    if (err) return res.status(500).send(err);
+            const filteredUser = _.omit(updatedUser.toObject(), 'password');
 
-                    return res.send({ user: updatedUser });
-                });
-            });
-        } else {
-            return res.status(400).send({ message: 'Email is required!' });
-        }
+            return res.send({ user: filteredUser });
+        });
     }
 
     public deleteUser = (req: Request, res: Response) => {
@@ -81,7 +84,7 @@ export class UserController {
     }
 
     public authenticateUserWithCredentials = (req: Request, res: Response) => {
-        User.findOne({ email: req.body.email }, async (err, user: any) => {
+        User.findOne({ email: req.body.email }, { password: 0 }, async (err, user: any) => {
             if (err) return res.status(500).send(err);
 
             if (user) {

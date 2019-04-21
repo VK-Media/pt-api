@@ -1,12 +1,9 @@
-import { Request, Response } from "express";
-
 import { ExerciseController } from "../controllers/index";
 
 export default class ExerciseRoutes {
     public exerciseController: ExerciseController = new ExerciseController();
 
     public routes(app): void {
-        // User 
         app.route('/exercise')
             .get(this.exerciseController.getExercises)
             .post(this.exerciseController.addNewExercise)

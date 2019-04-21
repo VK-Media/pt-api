@@ -2,20 +2,23 @@ import * as express from "express";
 import * as bodyParser from "body-parser";
 import * as mongoose from "mongoose";
 
-import UserRoutes from "./routes/userRoutes";
-import ExerciseRoutes from "./routes/exerciseRoutes";
+import { UserRoutes } from "./routes";
+import { UserTypeRoutes } from "./routes";
+import { ExerciseRoutes } from "./routes";
 
 class App {
     public app: express.Application;
     public userRoutes: UserRoutes = new UserRoutes();
+    public userTypeRoutes: UserTypeRoutes = new UserTypeRoutes();
     public exerciseRoutes: ExerciseRoutes = new ExerciseRoutes();
     public mongoUrl: string = process.env.MONGODB_URL || 'mongodb+srv://dev-user:0YEQY7TSlUrFfN3L@pt-development-rqjee.gcp.mongodb.net/test?retryWrites=true';
 
     constructor() {
         this.app = express();
         this.config();
-        this.userRoutes.routes(this.app); 
-        this.exerciseRoutes.routes(this.app); 
+        this.userRoutes.routes(this.app);
+        this.userTypeRoutes.routes(this.app);
+        this.exerciseRoutes.routes(this.app);
         this.mongoSetup();
     }
 

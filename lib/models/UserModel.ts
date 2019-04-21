@@ -17,6 +17,19 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    description: {
+        type: String
+    },
+    userType: {
+        type: Schema.Types.ObjectId,
+        ref: 'UserType'
+    },
+    age: {
+        type: Number
+    },
+    avatar: {
+        type: String
     }
 }, { timestamps: true });
 
