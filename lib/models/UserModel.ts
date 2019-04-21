@@ -17,14 +17,10 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: true
-    },
-    created_date: {
-        type: Date,
-        default: Date.now
     }
-});
+}, { timestamps: true });
 
-UserSchema.methods.authenticate = async function(password: string){
+UserSchema.methods.authenticate = async function (password: string) {
     return await bcrypt.compare(password, this.password);
 };
 
