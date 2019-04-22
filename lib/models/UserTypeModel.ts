@@ -9,6 +9,10 @@ const UserTypeSchema = new Schema({
     },
     description: {
         type: String
+    },
+    access: {
+        type: Map,
+        of: String
     }
 }, { timestamps: true });
 
