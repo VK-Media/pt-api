@@ -84,19 +84,25 @@ export class UserController {
     }
 
     public authenticateUserWithCredentials = (req: Request, res: Response) => {
-        User.findOne({ email: req.body.email }, { password: 0 }, async (err, user: any) => {
-            if (err) return res.status(500).send(err);
+        User.findOne({ email: req.body.email }, async (err, user: any) => {
+            if(err) return res.status(500).send(err);
 
-            if (user) {
-                if (await user.authenticate(req.body.password)) {
+            if(user){
+                if(await user.authenticate(req.body.password)){
                     const token = this.signToken(user._id);
 
-                    if (token) return res.send({ user, token });
+                    if(token){
+                        const filteredUser = _.omit(user.toObject(), 'password');
+
+                        return res.send({ user: filteredUser, token });
+                    }
 
                     return res.status(401).send({ message: "Token could not be generated." });
                 }
 
                 return res.status(401).send({ message: "User not authenticated" });
+            } else {
+                return res.status(404).send({ message: "User not found" });
             }
         });
     }
