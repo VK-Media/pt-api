@@ -66,12 +66,36 @@ export class UserController {
     }
 
     public updateUser = (req: Request, res: Response) => {
-        User.findOneAndUpdate({ _id: req.params.userId }, req.body, { new: true }, (err, updatedUser) => {
+        User.findById(req.params.userId, { password: 0 }, (err, user: any) => {
             if (err) return res.status(500).send(err);
 
-            const filteredUser = _.omit(updatedUser.toObject(), 'password');
+            const values = req.body;
 
-            return res.send({ user: filteredUser });
+            for (const key in values) {
+                if (values.hasOwnProperty(key)) {
+                    switch(key){
+                        case 'preferences':
+                            const preferences = values[key];
+
+                            for (const preference in preferences) {
+                                if (preferences.hasOwnProperty(preference)) {
+                                    user.preferences.set(preference, preferences[preference]);
+                                }
+                            }
+
+                            break;
+
+                        default:
+                            user[key] = values[key];
+
+                            break;
+                    }
+                }
+            }
+
+            user.save();
+
+            return res.send({ user });
         });
     }
 
