@@ -33,7 +33,7 @@ const UserSchema = new Schema({
     },
     preferences: {
         type: Map,
-        of: String
+        of: Schema.Types.Mixed
     }
 }, { timestamps: true });
 

@@ -79,7 +79,7 @@ export class UserController {
 
                             for (const preference in preferences) {
                                 if (preferences.hasOwnProperty(preference)) {
-                                    user.preferences.set(preference, preferences[preference]);
+                                    user.set('preferences.' + preference, preferences[preference]);
                                 }
                             }
 
